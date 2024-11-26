@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  auth-service:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - JWT_SECRET=your_jwt_secret
+      - DATABASE_URL=mongodb://mongo:27017/auth-db
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    container_name: auth-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
